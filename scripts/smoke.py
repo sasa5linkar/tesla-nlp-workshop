@@ -2,7 +2,6 @@
 import json
 import platform
 import sys
-import time
 from collections import Counter
 from pathlib import Path
 
@@ -13,7 +12,8 @@ from workshop.models import MANAGER
 from workshop.ui import EMOTION_EXAMPLES, EXAMPLES, SUMMARY_EXAMPLES
 
 reports = []
-report_path = Path(__file__).resolve().parents[1] / "docs" / "runtime-results.json"
+small = "--small" in sys.argv
+report_path = Path(__file__).resolve().parents[1] / "docs" / ("runtime-small-results.json" if small else "runtime-results.json")
 if "--resume" in sys.argv and report_path.exists():
     reports = json.loads(report_path.read_text(encoding="utf-8"))["results"]
 completed = Counter(item.get("task") for item in reports if item["passed"] and "task" in item)
@@ -21,12 +21,17 @@ seen = Counter()
 
 
 def save():
-    dest = Path(__file__).resolve().parents[1] / "docs" / "runtime-results.json"
+    dest = report_path
     dest.parent.mkdir(exist_ok=True)
     dest.write_text(json.dumps({"platform": platform.platform(), "python": platform.python_version(), "results": reports}, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-for task, preset, examples in [("ner", "judig", EXAMPLES), ("pos", "judig", EXAMPLES), ("emotion", "emotion", EMOTION_EXAMPLES), ("summary", "summary", SUMMARY_EXAMPLES), ("ner", "judig", EXAMPLES[:1])]:
+cases = [("emotion", "emotion", EMOTION_EXAMPLES[:1]), ("summary", "summary", SUMMARY_EXAMPLES)] if small else [
+    ("ner", "judig", EXAMPLES), ("pos", "judig", EXAMPLES),
+    ("emotion", "emotion", EMOTION_EXAMPLES), ("summary", "summary", SUMMARY_EXAMPLES),
+    ("ner", "judig", EXAMPLES[:1]),
+]
+for task, preset, examples in cases:
     for text in examples:
         seen[task] += 1
         if seen[task] <= completed[task]:
@@ -36,6 +41,8 @@ for task, preset, examples in [("ner", "judig", EXAMPLES), ("pos", "judig", EXAM
         try:
             result = analyze(task, preset, text)
             assert result["text"] == text and result["rows"]
+            if task == "summary":
+                assert result["manual_review_required"] is True
             for entity in result["entities"]:
                 assert text[entity["start"]:entity["end"]] == entity["text"]
             reports.append({"passed": True, **result})

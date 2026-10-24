@@ -1,0 +1,109 @@
+{
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.14",
+  "results": [
+    {
+      "passed": true,
+      "task": "emotion",
+      "model": "te-sla/serbian-emotion-teslaxlm",
+      "revision": "3be268fae557df0a258150207813d993dc9551a2",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Baš se radujem što ćemo ponovo biti zajedno! Hvala vam na pomoći.",
+      "rows": [
+        {
+          "label": "anger",
+          "sigmoid_score": 0.014295265078544617,
+          "threshold": 0.48828125,
+          "selected": false
+        },
+        {
+          "label": "anticipation",
+          "sigmoid_score": 0.026446565985679626,
+          "threshold": 0.2490234375,
+          "selected": false
+        },
+        {
+          "label": "disgust",
+          "sigmoid_score": 0.008168539963662624,
+          "threshold": 0.193359375,
+          "selected": false
+        },
+        {
+          "label": "fear",
+          "sigmoid_score": 0.005883547477424145,
+          "threshold": 0.08251953125,
+          "selected": false
+        },
+        {
+          "label": "joy",
+          "sigmoid_score": 0.955597996711731,
+          "threshold": 0.5703125,
+          "selected": true
+        },
+        {
+          "label": "sadness",
+          "sigmoid_score": 0.01859167031943798,
+          "threshold": 0.28515625,
+          "selected": false
+        },
+        {
+          "label": "surprise",
+          "sigmoid_score": 0.0073290616273880005,
+          "threshold": 0.34375,
+          "selected": false
+        },
+        {
+          "label": "trust",
+          "sigmoid_score": 0.06794840842485428,
+          "threshold": 0.306640625,
+          "selected": false
+        }
+      ],
+      "entities": [],
+      "summary": "",
+      "explanation": "Osam nezavisnih sigmoid skorova, uz izvorne pragove iz thresholds.json. Skorovi nisu kalibrisane verovatnoće niti zbir od 100%. Više emocija može preći prag; nijedna izabrana oznaka ne znači neutralno. Model je za društvene mreže i nepouzdan je kao detektor neutralnosti. Koristimo izvorni tekst, bez reprodukcije celog trening postupka čišćenja.",
+      "device": "cpu",
+      "input_tokens": 18,
+      "timing": {
+        "load_or_cache_seconds": 13.134,
+        "inference_seconds": 0.325,
+        "total_seconds": 13.459
+      },
+      "process_rss_mb": 1762.9
+    },
+    {
+      "passed": true,
+      "test": "emotion_oversized"
+    },
+    {
+      "passed": true,
+      "task": "summary",
+      "model": "te-sla/pilot5-sumarizacija",
+      "revision": "c9bac5bb79ecdd585a763ed5fe64abd9800bceea",
+      "model_license": "CC-BY-4.0",
+      "text": "Gradska biblioteka je otvorila novu čitaonicu. Prostor ima dvadeset mesta za rad i dostupan je svim članovima. Radionice čitanja održavaće se subotom. Prijave se primaju na pultu biblioteke.",
+      "rows": [
+        {
+          "summary": "Gradska biblioteka je otvorila novu čitaonicu. Prostor ima dvadeset mesta za rad i dostupan je svim članovima. Radionice čitanja održavaće se subotom. Prijave se primaju na pultu biblioteke.",
+          "manual_review_required": true
+        }
+      ],
+      "entities": [],
+      "summary": "Gradska biblioteka je otvorila novu čitaonicu. Prostor ima dvadeset mesta za rad i dostupan je svim članovima. Radionice čitanja održavaće se subotom. Prijave se primaju na pultu biblioteke.",
+      "explanation": "Eksperimentalni sažetak samo za latinicu. Obavezna je ručna provera uz izvornik: i latinični sažeci mogu izostaviti ili izmisliti činjenice. Uspešno izvršavanje nije dokaz činjenične pouzdanosti. Ulaz se ne preslovljava i ostaje sačuvan u JSON-u.",
+      "device": "cpu",
+      "input_tokens": 44,
+      "manual_review_required": true,
+      "timing": {
+        "load_or_cache_seconds": 1.126,
+        "inference_seconds": 2.822,
+        "total_seconds": 3.948
+      },
+      "process_rss_mb": 1332.4
+    },
+    {
+      "passed": true,
+      "test": "summary_oversized"
+    }
+  ]
+}

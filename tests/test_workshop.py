@@ -1,9 +1,6 @@
 import csv
 import json
-import threading
-import time
 import zipfile
-from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 

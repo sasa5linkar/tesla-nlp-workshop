@@ -1,6 +1,6 @@
 import time
 
-from .inputs import InputError, validate_text
+from .inputs import InputError, validate_summary_text, validate_text
 from .models import MANAGER
 from .registry import EMOTION_LABELS, PRESETS, TASK_PRESETS
 
@@ -8,7 +8,7 @@ EXPLANATIONS = {
     "ner": "NER označava pretpostavljene raspone i klase. spaCy ovde ne daje kalibrisanu verovatnoću po entitetu; zato nema izmišljenog procenta. NEL nije uključen. PERS=osoba, ROLE=uloga/zanimanje, LOC=mesto, ORG=organizacija, DEMO=grupa/demonim, WORK=delo, EVENT=događaj, PRODUCT=proizvod, IDEO=ideologija.",
     "pos": "UPOS je vrsta reči, lema je pretpostavljeni osnovni oblik. Model ne predviđa bogate morfološke osobine; prazna polja nisu sigurna oznaka. Nema kalibrisane pouzdanosti po tokenu. Pogrešan razmak ili tokenizacija mogu uticati na rezultat.",
     "emotion": "Osam nezavisnih sigmoid skorova, uz izvorne pragove iz thresholds.json. Skorovi nisu kalibrisane verovatnoće niti zbir od 100%. Više emocija može preći prag; nijedna izabrana oznaka ne znači neutralno. Model je za društvene mreže i nepouzdan je kao detektor neutralnosti. Koristimo izvorni tekst, bez reprodukcije celog trening postupka čišćenja.",
-    "summary": "Generisani sažetak može izostaviti ili izmisliti činjenice. Proverite ga uz izvornik. Izlaz može promeniti pismo; ulaz i izvoz izvornog teksta ostaju sačuvani. Ovo nije mera tačnosti niti pouzdanosti.",
+    "summary": "Eksperimentalni sažetak samo za latinicu. Obavezna je ručna provera uz izvornik: i latinični sažeci mogu izostaviti ili izmisliti činjenice. Uspešno izvršavanje nije dokaz činjenične pouzdanosti. Ulaz se ne preslovljava i ostaje sačuvan u JSON-u.",
 }
 
 
@@ -24,10 +24,21 @@ def check_token_limit(tokenizer, text, limit):
     return encoded, count
 
 
+def check_summary_coverage(tokenizer, encoded):
+    unknown_id = tokenizer.unk_token_id
+    if unknown_id is None or (encoded["input_ids"] == unknown_id).any().item():
+        raise InputError(
+            "Tokenizator ne može da predstavi ceo unos (nepoznat token). "
+            "Sažetak nije pokrenut. Proverite nepodržane znakove; tekst nije izmenjen."
+        )
+
+
 def analyze(task, preset_id, text, progress=no_progress):
     validate_text(text)
     if task not in TASK_PRESETS or preset_id not in TASK_PRESETS[task]:
         raise InputError("Izaberite podržani model za ovaj zadatak.")
+    if task == "summary":
+        validate_summary_text(text)
     preset = PRESETS[preset_id]
     # Gradio serializes all task events; this also protects CLI/API callers.
     with MANAGER.lock:
@@ -72,6 +83,8 @@ def analyze(task, preset_id, text, progress=no_progress):
         else:
             import torch
             encoded, count = check_token_limit(loaded["tokenizer"], text, preset.limit)
+            if task == "summary":
+                check_summary_coverage(loaded["tokenizer"], encoded)
             result["input_tokens"] = count
             with torch.inference_mode():
                 if task == "emotion":
@@ -87,7 +100,8 @@ def analyze(task, preset_id, text, progress=no_progress):
                         no_repeat_ngram_size=3, early_stopping=True,
                     )
                     result["summary"] = loaded["tokenizer"].decode(generated[0], skip_special_tokens=True)
-                    result["rows"] = [{"summary": result["summary"]}]
+                    result["manual_review_required"] = True
+                    result["rows"] = [{"summary": result["summary"], "manual_review_required": True}]
         result["timing"] = {
             "load_or_cache_seconds": round(load_seconds, 3),
             "inference_seconds": round(time.perf_counter() - infer_start, 3),

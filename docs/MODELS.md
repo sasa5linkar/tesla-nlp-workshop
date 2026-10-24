@@ -9,7 +9,7 @@ All requests in the local audit used anonymous HTTPS, without an HF token. Hub A
 | [Tanor/sr_pln_tesla_j125](https://huggingface.co/Tanor/sr_pln_tesla_j125) | `e13fdfafda4e178e31a6e84422461a0ba08f4af2` | 296,174,546 | CC BY-SA 4.0 | spaCy >=3.7.2,<3.8 requirement; not an automatic fallback in this environment |
 | [te-sla/serbian-emotion-teslaxlm](https://huggingface.co/te-sla/serbian-emotion-teslaxlm) | `3be268fae557df0a258150207813d993dc9551a2` | 2,239,643,272 | CC BY-SA 4.0 | Selected; eight true labels and published thresholds |
 | [procesaur/Emo355](https://huggingface.co/procesaur/Emo355) | `488bfbd44daab5d5ecbbd96698bd5ad14ce30fbd` | 1,416,925,056 + 65,752 dense head | Apache 2.0 | 16-dimensional expressed/evoked regression; not a categorical replacement |
-| [te-sla/pilot5-sumarizacija](https://huggingface.co/te-sla/pilot5-sumarizacija) | `c9bac5bb79ecdd585a763ed5fe64abd9800bceea` | 990,345,064 | CC BY 4.0 | Selected optional short summarization tab; own bundled tokenizer avoids case-sensitive base reference |
+| [te-sla/pilot5-sumarizacija](https://huggingface.co/te-sla/pilot5-sumarizacija) | `c9bac5bb79ecdd585a763ed5fe64abd9800bceea` | 990,345,064 | CC BY 4.0 | Experimental Latin-only summary; manual factual review required |
 
 ## Coherent runtime and code boundary
 
@@ -27,7 +27,13 @@ The card's training maximum is 128 tokens; this app rejects longer inputs rather
 
 ## Summarization contract
 
-The model repo itself includes tokenizer.json/spiece.model and tokenizer configuration with a 512-token maximum. We use that same pinned snapshot, avoiding the card's differently cased `te-sla/pilot5` reference. Input is rejected above 512 tokens including specials. Deterministic generation uses two CPU beams and up to 80 new tokens; it is a lighter workshop setting than the card's six-beam example. Output may hallucinate or change script; the original input remains exact in JSON.
+The model repo itself includes tokenizer.json/spiece.model and tokenizer configuration with a 512-token maximum. We retain that same pinned snapshot. Independent tests found that its tokenizer maps Cyrillic words to `<unk>`; merely generating output on a Cyrillic sample did not establish support. This finding does not establish a tokenizer mismatch as the cause, and no alternate tokenizer has been substituted.
+
+The task is experimental and Latin-only. Cyrillic and other non-Latin letters are rejected before loading a model, without silent transliteration. After tokenization, any unknown token rejects the input before generation. Input is also rejected above 512 tokens including specials. Deterministic generation uses two CPU beams and up to 80 new tokens; it is a lighter workshop setting than the card's six-beam example. Real Latin outputs have omissions and hallucinations, so successful execution and representable tokens do not establish factual reliability. The UI, JSON and TSV require manual factual review. The original input remains exact in JSON.
+
+## Runtime resource boundary
+
+The package sets `USE_TF=0`, `USE_FLAX=0`, `USE_TORCH=1` before any Gradio, spaCy or Transformers import. Only PyTorch is needed. Independently reported Colab testing of the full NEL large-model setup changed from a RAM crash around 12.67 GB to success with these flags. That is evidence for avoiding unused runtimes, not a measured memory guarantee for this local application. This application still excludes `entity_linker`; no NEL feature has been enabled. See the testing report for the environments and limits actually exercised here.
 
 ## Attribution
 

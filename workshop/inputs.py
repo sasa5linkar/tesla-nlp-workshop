@@ -1,4 +1,5 @@
 from pathlib import Path
+import unicodedata
 
 MAX_CHARS = 12_000
 MAX_FILE_BYTES = 48_000
@@ -16,6 +17,17 @@ def validate_text(text: str) -> str:
     if "\x00" in text:
         raise InputError("Tekst sadrži nedozvoljeni NUL znak. Koristite običan UTF-8 TXT.")
     return text
+
+
+def validate_summary_text(text: str) -> None:
+    """Reject unsupported scripts without modifying the original input."""
+    if any("CYRILLIC" in unicodedata.name(char, "") for char in text):
+        raise InputError(
+            "Eksperimentalni sažetak podržava samo latinicu. Ćirilica nije podržana; "
+            "tekst nije preslovljen. Unesite zaseban latinični tekst."
+        )
+    if any(char.isalpha() and "LATIN" not in unicodedata.name(char, "") for char in text):
+        raise InputError("Eksperimentalni sažetak podržava samo latinična slova. Tekst nije izmenjen.")
 
 
 def read_txt(path: str | Path) -> str:

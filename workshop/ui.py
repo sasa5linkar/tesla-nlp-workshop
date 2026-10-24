@@ -16,7 +16,6 @@ EMOTION_EXAMPLES = [
 ]
 SUMMARY_EXAMPLES = [
     "Gradska biblioteka je otvorila novu čitaonicu. Prostor ima dvadeset mesta za rad i dostupan je svim članovima. Radionice čitanja održavaće se subotom. Prijave se primaju na pultu biblioteke.",
-    "Градска библиотека је отворила нову читаоницу. Простор има двадесет места за рад и доступан је свим члановима. Радионице читања одржаваће се суботом. Пријаве се примају на пулту библиотеке.",
 ]
 
 
@@ -42,6 +41,8 @@ def run_task(task, text, preset_id, progress=gr.Progress(track_tqdm=True)):
             f"memorija procesa {result['process_rss_mb']:.0f} MB. "
             f"Revizija: `{result['revision'][:12]}`."
         )
+        if result.get("manual_review_required"):
+            status += " **Eksperimentalni sažetak — obavezna ručna provera činjenica uz izvornik.**"
         return highlighted, gr.update(value=values, headers=columns, column_count=(len(columns), "dynamic")), result["summary"], status, json_path, tsv_path
     except InputError as exc:
         return cleared(f"**Provera ulaza:** {exc}")
@@ -54,6 +55,19 @@ def run_task(task, text, preset_id, progress=gr.Progress(track_tqdm=True)):
             "Pokušajte ponovo kraćim primerom. Model i zavisnosti moraju biti iz zaključane instalacije. "
             "Za podršku navedite zadatak i tip greške, bez slanja privatnog teksta."
         )
+
+
+def compute_task(task, text, preset_id, progress=gr.Progress(track_tqdm=True)):
+    # Store the submitted source with the completed outputs, per browser session.
+    return {"source": (task, text, preset_id), "outputs": run_task(task, text, preset_id, progress)}
+
+
+def publish_task(completed, task, text, preset_id):
+    # Read current controls after inference, so an edit during a queued/running
+    # request cannot restore results or downloads belonging to the previous text.
+    if completed is None or completed["source"] != (task, text, preset_id):
+        return cleared("Ulaz je promenjen tokom analize. Pokrenite novu analizu za taj tekst.")
+    return completed["outputs"]
 
 
 def load_upload(path):
@@ -80,7 +94,7 @@ def build_app():
             "Do 12.000 znakova po unosu; modeli imaju i niže granice tokena. "
             "Nema skraćivanja bez upozorenja. Zaustavite server sa Ctrl+C u terminalu."
         )
-        for task, title in [("ner", "Imenovani entiteti · NER"), ("pos", "Vrste reči i leme"), ("emotion", "Emocije"), ("summary", "Kratak sažetak")]:
+        for task, title in [("ner", "Imenovani entiteti · NER"), ("pos", "Vrste reči i leme"), ("emotion", "Emocije"), ("summary", "Sažetak · eksperimentalno, latinica")]:
             with gr.Tab(title):
                 gr.Markdown(EXPLANATIONS[task])
                 preset = gr.Dropdown(
@@ -91,27 +105,32 @@ def build_app():
                 if task == "emotion":
                     gr.Markdown("Granica: **128 modelskih tokena**. Oznake: anger=ljutnja, anticipation=iščekivanje, disgust=gađenje, fear=strah, joy=radost, sadness=tuga, surprise=iznenađenje, trust=poverenje.")
                 elif task == "summary":
-                    gr.Markdown("Granica: **512 modelskih tokena**; do 80 novih tokena u sažetku. Koristi se tokenizator iz istog repozitorijuma kao model.")
+                    gr.Markdown("**Samo latinica.** Ćirilica i unos sa nepoznatim tokenima se odbijaju, bez preslovljavanja. Granica: **512 modelskih tokena**; do 80 novih tokena. Koristi se tokenizator iz istog repozitorijuma kao model. **Obavezna ručna provera činjenica.**")
                 else:
                     gr.Markdown("Granica: **3.000 spaCy tokena**; svaki transformer prozor proverava se i prema granici od 512 podrečničkih tokena.")
-                source = gr.Textbox(label="Tekst za analizu", lines=6, max_lines=12, placeholder="Unesite srpski tekst latinicom ili ćirilicom…")
+                placeholder = "Unesite srpski tekst samo latinicom…" if task == "summary" else "Unesite srpski tekst latinicom ili ćirilicom…"
+                source = gr.Textbox(label="Tekst za analizu", lines=6, max_lines=12, placeholder=placeholder)
                 upload = gr.File(label="Ili učitajte UTF-8 TXT (do 48 KB)", file_types=[".txt"], type="filepath")
                 examples = EMOTION_EXAMPLES if task == "emotion" else SUMMARY_EXAMPLES if task == "summary" else EXAMPLES
-                gr.Examples([[text] for text in examples], inputs=source, label="Primeri · latinica i ćirilica")
+                gr.Examples([[text] for text in examples], inputs=source, label="Primer · latinica" if task == "summary" else "Primeri · latinica i ćirilica")
                 run = gr.Button("Analiziraj tekst", variant="primary")
                 status = gr.Markdown("Model se učitava tek kada pokrenete analizu.")
                 highlighted = gr.HighlightedText(label="Entiteti u izvornom tekstu", visible=task == "ner", show_legend=True)
                 table = gr.Dataframe(label="Rezultati · originalne oznake modela", headers=["Rezultat"], column_count=(1, "dynamic"), interactive=False, wrap=True)
-                summary = gr.Textbox(label="Generisani sažetak · proverite uz izvornik", interactive=False, visible=task == "summary")
+                summary = gr.Textbox(label="Eksperimentalni sažetak · obavezna ručna provera činjenica", interactive=False, visible=task == "summary")
                 with gr.Row():
                     json_file = gr.File(label="Preuzmite JSON · izvorni tekst i metapodaci", interactive=False)
                     tsv_file = gr.File(label="Preuzmite TSV · tabela za Excel", interactive=False)
                 outputs = [highlighted, table, summary, status, json_file, tsv_file]
                 task_state = gr.State(task)
+                completed = gr.State()
                 run.click(
-                    run_task, [task_state, source, preset], outputs,
+                    compute_task, [task_state, source, preset], completed,
                     concurrency_id="one-model", concurrency_limit=1,
                     trigger_mode="once", api_name=False,
+                ).then(
+                    publish_task, [completed, task_state, source, preset], outputs,
+                    queue=False, api_name=False,
                 )
                 upload.upload(load_upload, upload, source, api_name=False)
                 source.change(lambda: cleared(), outputs=outputs, queue=False, api_name=False)

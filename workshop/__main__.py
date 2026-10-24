@@ -1,5 +1,4 @@
-import os
-from . import models  # Configure privacy before importing Gradio.
+from . import models  # noqa: F401 - configure privacy before importing Gradio
 from .ui import build_app
 
 

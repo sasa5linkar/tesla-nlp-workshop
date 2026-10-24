@@ -1,6 +1,6 @@
 # Tesla · radionica srpskog NLP-a
 
-Jednostavna lokalna aplikacija za učenje obrade srpskog jezika: **imenovani entiteti (NER), vrste reči i leme, emocije i kratki sažeci**. Unesite tekst latinicom ili ćirilicom, učitajte UTF-8 TXT, isprobajte primere i preuzmite tabelu ili JSON sa oznakom modela i njegovom revizijom.
+Jednostavna lokalna aplikacija za učenje obrade srpskog jezika: **imenovani entiteti (NER), vrste reči i leme, emocije i eksperimentalni kratki sažeci**. NER, vrste reči i emocije prihvataju latinicu i ćirilicu; **sažetak prihvata samo latinicu i zahteva ručnu proveru činjenica**. Učitajte UTF-8 TXT, isprobajte primere i preuzmite tabelu ili JSON sa oznakom modela i njegovom revizijom.
 
 ## Najkraći put do aplikacije
 
@@ -23,11 +23,13 @@ Preporučeno: **16 GB RAM-a**, 15 GB slobodnog diska, 64-bitni savremeni računa
 | NER | Tanor/sr_judig2026_teslaxlm | 3.000 spaCy tokena; dodatna provera podrečničkih prozora | Devet izvornih klasa; obojeni rasponi i tabela tokena |
 | Vrste reči i leme | isti JuDig2026 | ista granica | UPOS i lema; model ne predviđa bogatu morfologiju |
 | Emocije | te-sla/serbian-emotion-teslaxlm | 128 modelskih tokena sa specijalnim tokenima | Osam nezavisnih sigmoid skorova i objavljeni pragovi |
-| Kratak sažetak | te-sla/pilot5-sumarizacija | 512 modelskih tokena sa specijalnim tokenima | Do 80 novih tokena; proveriti činjenice uz izvornik |
+| Sažetak · eksperimentalno, samo latinica | te-sla/pilot5-sumarizacija | 512 modelskih tokena sa specijalnim tokenima; bez nepoznatih tokena | Do 80 novih tokena; obavezna ručna provera činjenica uz izvornik |
 
 Ukupna granica je 12.000 znakova, a TXT do 48 KB. Predugačak unos se odbija uz objašnjenje; ništa se ne odseca neprimetno. Sačekajte završetak jednog zahteva pre sledećeg. Svi zadaci dele red i zaključavanje: **jedan veliki model u memoriji u jednom trenutku**. NER i POS dele istu instancu; posle emocija ili sažetka JuDig se ponovo učitava.
 
-NER/POS nemaju izmišljene procente pouzdanosti. JuDig NEL komponenta je izostavljena: ova verzija ne prikazuje Wikidata identifikatore ni veze. Emocioni skorovi nisu raspodela koja sabiranjem daje 100%, niti je prazna lista sinonim za neutralno. Sažetak može promeniti pismo ili izmisliti činjenicu. To su predviđanja za radionicu, a ne referentne anotacije. Primere treba uporediti i ručno razmotriti greške.
+NER/POS nemaju izmišljene procente pouzdanosti. JuDig NEL komponenta je izostavljena: ova verzija ne prikazuje Wikidata identifikatore ni veze. Emocioni skorovi nisu raspodela koja sabiranjem daje 100%, niti je prazna lista sinonim za neutralno. Sažetak odbija ćirilicu bez preslovljavanja i odbija unos koji tokenizator ne može da predstavi. I latinični sažeci mogu izostaviti ili izmisliti činjenice; uspešno izvršavanje nije dokaz pouzdanosti. JSON i TSV označavaju obaveznu ručnu proveru sažetka. To su predviđanja za radionicu, a ne referentne anotacije.
+
+Aplikacija postavlja `USE_TF=0`, `USE_FLAX=0`, `USE_TORCH=1` pre uvoza biblioteka, da ne bi učitavala nepotrebne radne okvire i trošila dodatni RAM. Zaključana instalacija uključuje SOCKS podršku za HTTPX i Requests; postojeće postavke proksija i provera sertifikata se ne menjaju. Izmena teksta ili modela briše stare rezultate i izvoze; rezultat zahteva koji je završen za prethodni unos se ne prikazuje uz novi unos.
 
 ## Rezultati i privatnost
 
@@ -51,6 +53,7 @@ Modeli su keširani van repozitorijuma: Windows `%LOCALAPPDATA%\tesla-nlp-worksh
 ```sh
 uv sync --locked
 uv run --locked pytest -q
+uv run --locked python scripts/smoke.py --small
 uv run --locked python scripts/smoke.py
 uv run --locked python -m workshop
 ```
