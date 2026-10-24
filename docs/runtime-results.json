@@ -1,0 +1,1121 @@
+{
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.14",
+  "results": [
+    {
+      "passed": true,
+      "task": "ner",
+      "model": "Tanor/sr_judig2026_teslaxlm",
+      "revision": "259e37f6f9bec66baa51e28079cfdc777010d344",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Profesorka Ana Petrović radi na Univerzitetu u Beogradu. Marko putuje u Novi Sad.",
+      "rows": [
+        {
+          "token": "Profesorka",
+          "start": 0,
+          "end": 10,
+          "lemma": "profesorka",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ROLE",
+          "sentence_start": true
+        },
+        {
+          "token": "Ana",
+          "start": 11,
+          "end": 14,
+          "lemma": "Ana",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Petrović",
+          "start": 15,
+          "end": 23,
+          "lemma": "Petrović",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "radi",
+          "start": 24,
+          "end": 28,
+          "lemma": "raditi",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "na",
+          "start": 29,
+          "end": 31,
+          "lemma": "na",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Univerzitetu",
+          "start": 32,
+          "end": 44,
+          "lemma": "univerzitet",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "u",
+          "start": 45,
+          "end": 46,
+          "lemma": "u",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "Beogradu",
+          "start": 47,
+          "end": 55,
+          "lemma": "Beograd",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 55,
+          "end": 56,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Marko",
+          "start": 57,
+          "end": 62,
+          "lemma": "Marko",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": true
+        },
+        {
+          "token": "putuje",
+          "start": 63,
+          "end": 69,
+          "lemma": "putovati",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "u",
+          "start": 70,
+          "end": 71,
+          "lemma": "u",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Novi",
+          "start": 72,
+          "end": 76,
+          "lemma": "nov",
+          "upos": "ADJ",
+          "tag": "ADJ",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": "Sad",
+          "start": 77,
+          "end": 80,
+          "lemma": "sad",
+          "upos": "ADV",
+          "tag": "ADV",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 80,
+          "end": 81,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        }
+      ],
+      "entities": [
+        {
+          "text": "Profesorka",
+          "start": 0,
+          "end": 10,
+          "label": "ROLE",
+          "score": null
+        },
+        {
+          "text": "Univerzitetu u Beogradu",
+          "start": 32,
+          "end": 55,
+          "label": "ORG",
+          "score": null
+        },
+        {
+          "text": "Novi Sad",
+          "start": 72,
+          "end": 80,
+          "label": "LOC",
+          "score": null
+        }
+      ],
+      "summary": "",
+      "explanation": "NER označava pretpostavljene raspone i klase. spaCy ovde ne daje kalibrisanu verovatnoću po entitetu; zato nema izmišljenog procenta. NEL nije uključen. PERS=osoba, ROLE=uloga/zanimanje, LOC=mesto, ORG=organizacija, DEMO=grupa/demonim, WORK=delo, EVENT=događaj, PRODUCT=proizvod, IDEO=ideologija.",
+      "device": "cpu",
+      "input_tokens": 15,
+      "timing": {
+        "load_or_cache_seconds": 118.027,
+        "inference_seconds": 0.181,
+        "total_seconds": 118.208
+      },
+      "process_rss_mb": 4965.9
+    },
+    {
+      "passed": true,
+      "task": "ner",
+      "model": "Tanor/sr_judig2026_teslaxlm",
+      "revision": "259e37f6f9bec66baa51e28079cfdc777010d344",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Професорка Ана Петровић ради на Универзитету у Београду. Марко путује у Нови Сад.",
+      "rows": [
+        {
+          "token": "Професорка",
+          "start": 0,
+          "end": 10,
+          "lemma": "Професорка",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ROLE",
+          "sentence_start": true
+        },
+        {
+          "token": "Ана",
+          "start": 11,
+          "end": 14,
+          "lemma": "Ана",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Петровић",
+          "start": 15,
+          "end": 23,
+          "lemma": "Петровић",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "ради",
+          "start": 24,
+          "end": 28,
+          "lemma": "радиti",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "на",
+          "start": 29,
+          "end": 31,
+          "lemma": "на",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Универзитету",
+          "start": 32,
+          "end": 44,
+          "lemma": "Универзитету",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "у",
+          "start": 45,
+          "end": 46,
+          "lemma": "у",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "Београду",
+          "start": 47,
+          "end": 55,
+          "lemma": "Београду",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 55,
+          "end": 56,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Марко",
+          "start": 57,
+          "end": 62,
+          "lemma": "Марко",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": true
+        },
+        {
+          "token": "путује",
+          "start": 63,
+          "end": 69,
+          "lemma": "путује",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "у",
+          "start": 70,
+          "end": 71,
+          "lemma": "у",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Нови",
+          "start": 72,
+          "end": 76,
+          "lemma": "Нови",
+          "upos": "ADJ",
+          "tag": "ADJ",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": "Сад",
+          "start": 77,
+          "end": 80,
+          "lemma": "Сад",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 80,
+          "end": 81,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        }
+      ],
+      "entities": [
+        {
+          "text": "Професорка",
+          "start": 0,
+          "end": 10,
+          "label": "ROLE",
+          "score": null
+        },
+        {
+          "text": "Универзитету у Београду",
+          "start": 32,
+          "end": 55,
+          "label": "ORG",
+          "score": null
+        },
+        {
+          "text": "Нови Сад",
+          "start": 72,
+          "end": 80,
+          "label": "LOC",
+          "score": null
+        }
+      ],
+      "summary": "",
+      "explanation": "NER označava pretpostavljene raspone i klase. spaCy ovde ne daje kalibrisanu verovatnoću po entitetu; zato nema izmišljenog procenta. NEL nije uključen. PERS=osoba, ROLE=uloga/zanimanje, LOC=mesto, ORG=organizacija, DEMO=grupa/demonim, WORK=delo, EVENT=događaj, PRODUCT=proizvod, IDEO=ideologija.",
+      "device": "cpu",
+      "input_tokens": 15,
+      "timing": {
+        "load_or_cache_seconds": 0.0,
+        "inference_seconds": 0.167,
+        "total_seconds": 0.167
+      },
+      "process_rss_mb": 4966.8
+    },
+    {
+      "passed": true,
+      "task": "pos",
+      "model": "Tanor/sr_judig2026_teslaxlm",
+      "revision": "259e37f6f9bec66baa51e28079cfdc777010d344",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Profesorka Ana Petrović radi na Univerzitetu u Beogradu. Marko putuje u Novi Sad.",
+      "rows": [
+        {
+          "token": "Profesorka",
+          "start": 0,
+          "end": 10,
+          "lemma": "profesorka",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ROLE",
+          "sentence_start": true
+        },
+        {
+          "token": "Ana",
+          "start": 11,
+          "end": 14,
+          "lemma": "Ana",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Petrović",
+          "start": 15,
+          "end": 23,
+          "lemma": "Petrović",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "radi",
+          "start": 24,
+          "end": 28,
+          "lemma": "raditi",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "na",
+          "start": 29,
+          "end": 31,
+          "lemma": "na",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Univerzitetu",
+          "start": 32,
+          "end": 44,
+          "lemma": "univerzitet",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "u",
+          "start": 45,
+          "end": 46,
+          "lemma": "u",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "Beogradu",
+          "start": 47,
+          "end": 55,
+          "lemma": "Beograd",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 55,
+          "end": 56,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Marko",
+          "start": 57,
+          "end": 62,
+          "lemma": "Marko",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": true
+        },
+        {
+          "token": "putuje",
+          "start": 63,
+          "end": 69,
+          "lemma": "putovati",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "u",
+          "start": 70,
+          "end": 71,
+          "lemma": "u",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Novi",
+          "start": 72,
+          "end": 76,
+          "lemma": "nov",
+          "upos": "ADJ",
+          "tag": "ADJ",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": "Sad",
+          "start": 77,
+          "end": 80,
+          "lemma": "sad",
+          "upos": "ADV",
+          "tag": "ADV",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 80,
+          "end": 81,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        }
+      ],
+      "entities": [],
+      "summary": "",
+      "explanation": "UPOS je vrsta reči, lema je pretpostavljeni osnovni oblik. Model ne predviđa bogate morfološke osobine; prazna polja nisu sigurna oznaka. Nema kalibrisane pouzdanosti po tokenu. Pogrešan razmak ili tokenizacija mogu uticati na rezultat.",
+      "device": "cpu",
+      "input_tokens": 15,
+      "timing": {
+        "load_or_cache_seconds": 0.0,
+        "inference_seconds": 0.161,
+        "total_seconds": 0.161
+      },
+      "process_rss_mb": 4966.8
+    },
+    {
+      "passed": true,
+      "task": "pos",
+      "model": "Tanor/sr_judig2026_teslaxlm",
+      "revision": "259e37f6f9bec66baa51e28079cfdc777010d344",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Професорка Ана Петровић ради на Универзитету у Београду. Марко путује у Нови Сад.",
+      "rows": [
+        {
+          "token": "Професорка",
+          "start": 0,
+          "end": 10,
+          "lemma": "Професорка",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ROLE",
+          "sentence_start": true
+        },
+        {
+          "token": "Ана",
+          "start": 11,
+          "end": 14,
+          "lemma": "Ана",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Петровић",
+          "start": 15,
+          "end": 23,
+          "lemma": "Петровић",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "ради",
+          "start": 24,
+          "end": 28,
+          "lemma": "радиti",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "на",
+          "start": 29,
+          "end": 31,
+          "lemma": "на",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Универзитету",
+          "start": 32,
+          "end": 44,
+          "lemma": "Универзитету",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "у",
+          "start": 45,
+          "end": 46,
+          "lemma": "у",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "Београду",
+          "start": 47,
+          "end": 55,
+          "lemma": "Београду",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 55,
+          "end": 56,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Марко",
+          "start": 57,
+          "end": 62,
+          "lemma": "Марко",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": true
+        },
+        {
+          "token": "путује",
+          "start": 63,
+          "end": 69,
+          "lemma": "путује",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "у",
+          "start": 70,
+          "end": 71,
+          "lemma": "у",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Нови",
+          "start": 72,
+          "end": 76,
+          "lemma": "Нови",
+          "upos": "ADJ",
+          "tag": "ADJ",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": "Сад",
+          "start": 77,
+          "end": 80,
+          "lemma": "Сад",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 80,
+          "end": 81,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        }
+      ],
+      "entities": [],
+      "summary": "",
+      "explanation": "UPOS je vrsta reči, lema je pretpostavljeni osnovni oblik. Model ne predviđa bogate morfološke osobine; prazna polja nisu sigurna oznaka. Nema kalibrisane pouzdanosti po tokenu. Pogrešan razmak ili tokenizacija mogu uticati na rezultat.",
+      "device": "cpu",
+      "input_tokens": 15,
+      "timing": {
+        "load_or_cache_seconds": 0.0,
+        "inference_seconds": 0.161,
+        "total_seconds": 0.161
+      },
+      "process_rss_mb": 4966.8
+    },
+    {
+      "passed": true,
+      "task": "emotion",
+      "model": "te-sla/serbian-emotion-teslaxlm",
+      "revision": "3be268fae557df0a258150207813d993dc9551a2",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Baš se radujem što ćemo ponovo biti zajedno! Hvala vam na pomoći.",
+      "rows": [
+        {
+          "label": "anger",
+          "sigmoid_score": 0.014295265078544617,
+          "threshold": 0.48828125,
+          "selected": false
+        },
+        {
+          "label": "anticipation",
+          "sigmoid_score": 0.026446565985679626,
+          "threshold": 0.2490234375,
+          "selected": false
+        },
+        {
+          "label": "disgust",
+          "sigmoid_score": 0.008168539963662624,
+          "threshold": 0.193359375,
+          "selected": false
+        },
+        {
+          "label": "fear",
+          "sigmoid_score": 0.005883547477424145,
+          "threshold": 0.08251953125,
+          "selected": false
+        },
+        {
+          "label": "joy",
+          "sigmoid_score": 0.955597996711731,
+          "threshold": 0.5703125,
+          "selected": true
+        },
+        {
+          "label": "sadness",
+          "sigmoid_score": 0.01859167031943798,
+          "threshold": 0.28515625,
+          "selected": false
+        },
+        {
+          "label": "surprise",
+          "sigmoid_score": 0.0073290616273880005,
+          "threshold": 0.34375,
+          "selected": false
+        },
+        {
+          "label": "trust",
+          "sigmoid_score": 0.06794840842485428,
+          "threshold": 0.306640625,
+          "selected": false
+        }
+      ],
+      "entities": [],
+      "summary": "",
+      "explanation": "Osam nezavisnih sigmoid skorova, uz izvorne pragove iz thresholds.json. Skorovi nisu kalibrisane verovatnoće niti zbir od 100%. Više emocija može preći prag; nijedna izabrana oznaka ne znači neutralno. Model je za društvene mreže i nepouzdan je kao detektor neutralnosti. Koristimo izvorni tekst, bez reprodukcije celog trening postupka čišćenja.",
+      "device": "cpu",
+      "input_tokens": 18,
+      "timing": {
+        "load_or_cache_seconds": 79.975,
+        "inference_seconds": 0.31,
+        "total_seconds": 80.285
+      },
+      "process_rss_mb": 1814.6
+    },
+    {
+      "passed": true,
+      "task": "emotion",
+      "model": "te-sla/serbian-emotion-teslaxlm",
+      "revision": "3be268fae557df0a258150207813d993dc9551a2",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Баш се радујем што ћемо поново бити заједно! Хвала вам на помоћи.",
+      "rows": [
+        {
+          "label": "anger",
+          "sigmoid_score": 0.011903132311999798,
+          "threshold": 0.48828125,
+          "selected": false
+        },
+        {
+          "label": "anticipation",
+          "sigmoid_score": 0.027250969782471657,
+          "threshold": 0.2490234375,
+          "selected": false
+        },
+        {
+          "label": "disgust",
+          "sigmoid_score": 0.008067152462899685,
+          "threshold": 0.193359375,
+          "selected": false
+        },
+        {
+          "label": "fear",
+          "sigmoid_score": 0.00565720908343792,
+          "threshold": 0.08251953125,
+          "selected": false
+        },
+        {
+          "label": "joy",
+          "sigmoid_score": 0.9527001976966858,
+          "threshold": 0.5703125,
+          "selected": true
+        },
+        {
+          "label": "sadness",
+          "sigmoid_score": 0.01684950292110443,
+          "threshold": 0.28515625,
+          "selected": false
+        },
+        {
+          "label": "surprise",
+          "sigmoid_score": 0.007356129586696625,
+          "threshold": 0.34375,
+          "selected": false
+        },
+        {
+          "label": "trust",
+          "sigmoid_score": 0.06999579817056656,
+          "threshold": 0.306640625,
+          "selected": false
+        }
+      ],
+      "entities": [],
+      "summary": "",
+      "explanation": "Osam nezavisnih sigmoid skorova, uz izvorne pragove iz thresholds.json. Skorovi nisu kalibrisane verovatnoće niti zbir od 100%. Više emocija može preći prag; nijedna izabrana oznaka ne znači neutralno. Model je za društvene mreže i nepouzdan je kao detektor neutralnosti. Koristimo izvorni tekst, bez reprodukcije celog trening postupka čišćenja.",
+      "device": "cpu",
+      "input_tokens": 18,
+      "timing": {
+        "load_or_cache_seconds": 0.0,
+        "inference_seconds": 0.139,
+        "total_seconds": 0.139
+      },
+      "process_rss_mb": 1814.9
+    },
+    {
+      "passed": true,
+      "test": "emotion_oversized"
+    },
+    {
+      "passed": true,
+      "task": "summary",
+      "model": "te-sla/pilot5-sumarizacija",
+      "revision": "c9bac5bb79ecdd585a763ed5fe64abd9800bceea",
+      "model_license": "CC-BY-4.0",
+      "text": "Gradska biblioteka je otvorila novu čitaonicu. Prostor ima dvadeset mesta za rad i dostupan je svim članovima. Radionice čitanja održavaće se subotom. Prijave se primaju na pultu biblioteke.",
+      "rows": [
+        {
+          "summary": "Gradska biblioteka je otvorila novu čitaonicu. Prostor ima dvadeset mesta za rad i dostupan je svim članovima. Radionice čitanja održavaće se subotom. Prijave se primaju na pultu biblioteke."
+        }
+      ],
+      "entities": [],
+      "summary": "Gradska biblioteka je otvorila novu čitaonicu. Prostor ima dvadeset mesta za rad i dostupan je svim članovima. Radionice čitanja održavaće se subotom. Prijave se primaju na pultu biblioteke.",
+      "explanation": "Generisani sažetak može izostaviti ili izmisliti činjenice. Proverite ga uz izvornik. Izlaz može promeniti pismo; ulaz i izvoz izvornog teksta ostaju sačuvani. Ovo nije mera tačnosti niti pouzdanosti.",
+      "device": "cpu",
+      "input_tokens": 44,
+      "timing": {
+        "load_or_cache_seconds": 29.337,
+        "inference_seconds": 2.777,
+        "total_seconds": 32.114
+      },
+      "process_rss_mb": 1311.3
+    },
+    {
+      "passed": true,
+      "task": "summary",
+      "model": "te-sla/pilot5-sumarizacija",
+      "revision": "c9bac5bb79ecdd585a763ed5fe64abd9800bceea",
+      "model_license": "CC-BY-4.0",
+      "text": "Градска библиотека је отворила нову читаоницу. Простор има двадесет места за рад и доступан је свим члановима. Радионице читања одржаваће се суботом. Пријаве се примају на пулту библиотеке.",
+      "rows": [
+        {
+          "summary": "Ova grad je tradicionalna komandant koja važan zakonom, a zakonom je  obje koja važan verovatnoće. Ova grad ima i primenom u poljoprivredi, industriji i industriji, kao i u poljoprivredi i industriji."
+        }
+      ],
+      "entities": [],
+      "summary": "Ova grad je tradicionalna komandant koja važan zakonom, a zakonom je  obje koja važan verovatnoće. Ova grad ima i primenom u poljoprivredi, industriji i industriji, kao i u poljoprivredi i industriji.",
+      "explanation": "Generisani sažetak može izostaviti ili izmisliti činjenice. Proverite ga uz izvornik. Izlaz može promeniti pismo; ulaz i izvoz izvornog teksta ostaju sačuvani. Ovo nije mera tačnosti niti pouzdanosti.",
+      "device": "cpu",
+      "input_tokens": 61,
+      "timing": {
+        "load_or_cache_seconds": 0.0,
+        "inference_seconds": 2.463,
+        "total_seconds": 2.463
+      },
+      "process_rss_mb": 1236.6
+    },
+    {
+      "passed": true,
+      "test": "summary_oversized"
+    },
+    {
+      "passed": true,
+      "task": "ner",
+      "model": "Tanor/sr_judig2026_teslaxlm",
+      "revision": "259e37f6f9bec66baa51e28079cfdc777010d344",
+      "model_license": "CC-BY-SA-4.0",
+      "text": "Profesorka Ana Petrović radi na Univerzitetu u Beogradu. Marko putuje u Novi Sad.",
+      "rows": [
+        {
+          "token": "Profesorka",
+          "start": 0,
+          "end": 10,
+          "lemma": "profesorka",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ROLE",
+          "sentence_start": true
+        },
+        {
+          "token": "Ana",
+          "start": 11,
+          "end": 14,
+          "lemma": "Ana",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Petrović",
+          "start": 15,
+          "end": 23,
+          "lemma": "Petrović",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "radi",
+          "start": 24,
+          "end": 28,
+          "lemma": "raditi",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "na",
+          "start": 29,
+          "end": 31,
+          "lemma": "na",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Univerzitetu",
+          "start": 32,
+          "end": 44,
+          "lemma": "univerzitet",
+          "upos": "NOUN",
+          "tag": "NOUN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "u",
+          "start": 45,
+          "end": 46,
+          "lemma": "u",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": "Beogradu",
+          "start": 47,
+          "end": 55,
+          "lemma": "Beograd",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "ORG",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 55,
+          "end": 56,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Marko",
+          "start": 57,
+          "end": 62,
+          "lemma": "Marko",
+          "upos": "PROPN",
+          "tag": "PROPN",
+          "entity": "",
+          "sentence_start": true
+        },
+        {
+          "token": "putuje",
+          "start": 63,
+          "end": 69,
+          "lemma": "putovati",
+          "upos": "VERB",
+          "tag": "VERB",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "u",
+          "start": 70,
+          "end": 71,
+          "lemma": "u",
+          "upos": "ADP",
+          "tag": "ADP",
+          "entity": "",
+          "sentence_start": false
+        },
+        {
+          "token": "Novi",
+          "start": 72,
+          "end": 76,
+          "lemma": "nov",
+          "upos": "ADJ",
+          "tag": "ADJ",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": "Sad",
+          "start": 77,
+          "end": 80,
+          "lemma": "sad",
+          "upos": "ADV",
+          "tag": "ADV",
+          "entity": "LOC",
+          "sentence_start": false
+        },
+        {
+          "token": ".",
+          "start": 80,
+          "end": 81,
+          "lemma": ".",
+          "upos": "PUNCT",
+          "tag": "PUNCT",
+          "entity": "",
+          "sentence_start": false
+        }
+      ],
+      "entities": [
+        {
+          "text": "Profesorka",
+          "start": 0,
+          "end": 10,
+          "label": "ROLE",
+          "score": null
+        },
+        {
+          "text": "Univerzitetu u Beogradu",
+          "start": 32,
+          "end": 55,
+          "label": "ORG",
+          "score": null
+        },
+        {
+          "text": "Novi Sad",
+          "start": 72,
+          "end": 80,
+          "label": "LOC",
+          "score": null
+        }
+      ],
+      "summary": "",
+      "explanation": "NER označava pretpostavljene raspone i klase. spaCy ovde ne daje kalibrisanu verovatnoću po entitetu; zato nema izmišljenog procenta. NEL nije uključen. PERS=osoba, ROLE=uloga/zanimanje, LOC=mesto, ORG=organizacija, DEMO=grupa/demonim, WORK=delo, EVENT=događaj, PRODUCT=proizvod, IDEO=ideologija.",
+      "device": "cpu",
+      "input_tokens": 15,
+      "timing": {
+        "load_or_cache_seconds": 13.872,
+        "inference_seconds": 0.162,
+        "total_seconds": 14.034
+      },
+      "process_rss_mb": 4956.4
+    }
+  ]
+}
