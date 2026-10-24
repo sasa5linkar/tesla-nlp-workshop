@@ -5,6 +5,7 @@ from .adapters import EXPLANATIONS, analyze
 from .exports import export_result
 from .inputs import InputError, read_txt
 from .registry import PRESETS, TASK_PRESETS
+from .workshop_ui import build_workshop_tab
 
 EXAMPLES = [
     "Profesorka Ana Petrović radi na Univerzitetu u Beogradu. Marko putuje u Novi Sad.",
@@ -80,7 +81,7 @@ def load_upload(path):
         raise gr.Error(message) from None
 
 
-def build_app():
+def build_app(experiments=False):
     with gr.Blocks(title="Tesla · radionica srpskog NLP-a", analytics_enabled=False, delete_cache=(3600, 3600)) as app:
         gr.Markdown(
             "# Tesla · radionica srpskog NLP-a\n"
@@ -94,7 +95,8 @@ def build_app():
             "Do 12.000 znakova po unosu; modeli imaju i niže granice tokena. "
             "Nema skraćivanja bez upozorenja. Zaustavite server sa Ctrl+C u terminalu."
         )
-        for task, title in [("ner", "Imenovani entiteti · NER"), ("pos", "Vrste reči i leme"), ("emotion", "Emocije"), ("summary", "Sažetak · eksperimentalno, latinica")]:
+        build_workshop_tab(load_upload)
+        for task, title in ([("ner", "Imenovani entiteti · NER"), ("pos", "Vrste reči i leme"), ("emotion", "Emocije"), ("summary", "Sažetak · eksperimentalno, latinica")] if experiments else []):
             with gr.Tab(title):
                 gr.Markdown(EXPLANATIONS[task])
                 preset = gr.Dropdown(

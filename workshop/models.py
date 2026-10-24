@@ -97,7 +97,7 @@ class ModelManager:
                 preset.repo, preset.filename, revision=preset.revision, token=False,
                 cache_dir=str(cache_root() / "hub"),
             ))
-            model_dir = cache_root() / (preset_id + "-" + preset.revision)
+            model_dir = cache_root() / ("judig-" + preset.revision)
             marker = model_dir / ".complete"
             if not marker.exists():
                 progress(0.35, desc="Provera SHA-256 i izdvajanje podataka…")
@@ -107,8 +107,12 @@ class ModelManager:
                 marker.write_text(preset.sha256, encoding="ascii")
             progress(0.50, desc="Učitavanje JuDig modela u CPU memoriju…")
             spacy.require_cpu()
-            # NEL is deliberately excluded; its custom scoring registration is not executed.
-            model = spacy.load(model_dir, exclude=["entity_linker"])
+            # Use the official inference implementation and published KB/weights.
+            # The model package's custom training/evaluation Python is not executed.
+            options = {"config": {"components": {"entity_linker": {
+                "scorer": {"@scorers": "spacy.entity_linker_scorer.v1"},
+            }}}} if preset.full_linker else {"exclude": ["entity_linker"]}
+            model = spacy.load(model_dir, **options)
             loaded = {"model": model}
         else:
             from transformers import AutoModelForSequenceClassification, AutoModelForSeq2SeqLM, AutoTokenizer

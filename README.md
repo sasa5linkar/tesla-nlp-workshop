@@ -1,6 +1,6 @@
 # Tesla · radionica srpskog NLP-a
 
-Jednostavna lokalna aplikacija za učenje obrade srpskog jezika: **imenovani entiteti (NER), vrste reči i leme, emocije i eksperimentalni kratki sažeci**. NER, vrste reči i emocije prihvataju latinicu i ćirilicu; **sažetak prihvata samo latinicu i zahteva ručnu proveru činjenica**. Učitajte UTF-8 TXT, isprobajte primere i preuzmite tabelu ili JSON sa oznakom modela i njegovom revizijom.
+Lokalna aplikacija za radionicu obrade srpskog jezika: **rečenice, vrste reči (POS), leme, imenovani entiteti (NER) i povezivanje sa Wikidata (NEL)** pomoću novog JuDig modela. Unesite kratak tekst latinicom ili ćirilicom ili učitajte UTF-8 TXT. Pregledajte predviđanja, preuzmite HTML sa anotacijama i TSV za ispravke u Excelu; JSON čuva tačan izvor i metapodatke. Koordinate povezanih lokacija preuzimaju se samo uz poseban pristanak.
 
 ## Najkraći put do aplikacije
 
@@ -9,7 +9,7 @@ GitHub nalog nije potreban. [Preuzmite ZIP](https://github.com/sasa5linkar/tesla
 1. Instalirajte **uv** prema [zvaničnom uputstvu](https://docs.astral.sh/uv/getting-started/installation/). Proverena verzija za ovu radionicu: `0.9.7`. Na Windowsu se može instalirati i pomoću `winget install --id astral-sh.uv --exact`.
 2. Windows: dvaput kliknite `start.bat`. macOS: u terminalu u raspakovanom folderu pokrenite `sh start.command`. Linux: `sh start.sh`.
 3. Otvorite **http://127.0.0.1:7860** u pregledaču. Prozor terminala ostaje otvoren dok aplikacija radi.
-4. Izaberite karticu, kliknite na primer ili unesite tekst, pa na **Analiziraj tekst**. Prvo korišćenje određenog modela preuzima njegove težine; sačekajte prikaz napretka.
+4. U kartici **Radionica** izaberite puni JuDig sa NEL/KB ili lakši režim bez NEL. Kliknite na primer ili unesite tekst, pa na **Analiziraj · učitaj izabrani model**. Prvo korišćenje preuzima javne težine; sačekajte prikaz napretka. Puni NEL zahteva više RAM-a.
 5. Za kraj u terminalu pritisnite **Ctrl+C**.
 
 uv automatski instalira Python **3.11.14** i zaključane zavisnosti iz `uv.lock`. Globalni Python, GitHub Desktop i VS Code nisu potrebni. GitHub Desktop je zgodan za preuzimanje novih verzija, a VS Code za razgledanje koda, ali ne predstavljaju uslov za radionicu.
@@ -20,20 +20,22 @@ Preporučeno: **16 GB RAM-a**, 15 GB slobodnog diska, 64-bitni savremeni računa
 
 | Kartica | Model | Granica ulaza | Tumačenje |
 |---|---|---|---|
-| NER | Tanor/sr_judig2026_teslaxlm | 3.000 spaCy tokena; dodatna provera podrečničkih prozora | Devet izvornih klasa; obojeni rasponi i tabela tokena |
-| Vrste reči i leme | isti JuDig2026 | ista granica | UPOS i lema; model ne predviđa bogatu morfologiju |
-| Emocije | te-sla/serbian-emotion-teslaxlm | 128 modelskih tokena sa specijalnim tokenima | Osam nezavisnih sigmoid skorova i objavljeni pragovi |
-| Sažetak · eksperimentalno, samo latinica | te-sla/pilot5-sumarizacija | 512 modelskih tokena sa specijalnim tokenima; bez nepoznatih tokena | Do 80 novih tokena; obavezna ručna provera činjenica uz izvornik |
+| Radionica · puni JuDig | Tanor/sr_judig2026_teslaxlm, objavljena KB i linker | 3.000 spaCy tokena; dodatna provera podrečničkih prozora | Rečenice, POS, leme, devet NER klasa i stvarna NEL predviđanja/QID |
+| Radionica · JuDig bez NEL | isti JuDig2026, linker/KB izostavljeni | ista granica | Rečenice, POS, leme i NER; bez Wikidata predviđanja |
 
 Ukupna granica je 12.000 znakova, a TXT do 48 KB. Predugačak unos se odbija uz objašnjenje; ništa se ne odseca neprimetno. Sačekajte završetak jednog zahteva pre sledećeg. Svi zadaci dele red i zaključavanje: **jedan veliki model u memoriji u jednom trenutku**. NER i POS dele istu instancu; posle emocija ili sažetka JuDig se ponovo učitava.
 
-NER/POS nemaju izmišljene procente pouzdanosti. JuDig NEL komponenta je izostavljena: ova verzija ne prikazuje Wikidata identifikatore ni veze. Emocioni skorovi nisu raspodela koja sabiranjem daje 100%, niti je prazna lista sinonim za neutralno. Sažetak odbija ćirilicu bez preslovljavanja i odbija unos koji tokenizator ne može da predstavi. I latinični sažeci mogu izostaviti ili izmisliti činjenice; uspešno izvršavanje nije dokaz pouzdanosti. JSON i TSV označavaju obaveznu ručnu proveru sažetka. To su predviđanja za radionicu, a ne referentne anotacije.
+Izvorne oznake i QID-ovi ostaju predviđanja modela, bez izmišljenih procenata pouzdanosti. `NIL` i neispravni identifikatori se nikada ne pretvaraju u veze. Pregledajte leme, POS, granice rečenica i NER/NEL greške ručno. Izbor bez NEL ne učitava linker/KB. CNN i četvoroklasni modeli nisu uključeni u ovu lokalnu instalaciju; ne pripisujemo im JuDig POS/lemma mogućnosti. Stariji CNN zahteva zasebno spaCy 3.5.4 okruženje u Colabu.
+
+Sažetak i emocije **nisu deo podrazumevane radionice**. Ako su potrebni za zaseban ogled, pokrenite `uv run --locked python -m workshop --experiments`. Eksperimentalni sažetak ostaje samo za latinicu, odbija nepoznate tokene i zahteva proveru činjenica; i latinični izlazi mogu izmišljati ili izostavljati činjenice. Emocije zadržavaju izvornih osam oznaka i objavljene pragove.
 
 Aplikacija postavlja `USE_TF=0`, `USE_FLAX=0`, `USE_TORCH=1` pre uvoza biblioteka, da ne bi učitavala nepotrebne radne okvire i trošila dodatni RAM. Zaključana instalacija uključuje SOCKS podršku za HTTPX i Requests; postojeće postavke proksija i provera sertifikata se ne menjaju. Izmena teksta ili modela briše stare rezultate i izvoze; rezultat zahteva koji je završen za prethodni unos se ne prikazuje uz novi unos.
 
 ## Rezultati i privatnost
 
-**JSON** čuva tačan izvorni tekst, raspone entiteta, tabelu, objašnjenje, reviziju, licencu i vreme izvršavanja. **TSV** čuva tabelu, sa UTF-8 BOM-om za Excel. Ćelije koje mogu postati Excel formule dobijaju zaštitni apostrof; JSON čuva izvorne vrednosti bez te promene.
+**HTML** čuva anotirani izvorni tekst, izvorne NER klase, QID veze, rečenice i kartu koordinata kada su koordinate preuzete. Radi bez spoljnih skripti i pločica karte; klik na spoljne Wikidata/OpenStreetMap veze zahteva internet. **JSON** čuva tačan izvorni tekst, raspone, tokene, reviziju, licencu i merenja. **TSV** ima UTF-8 BOM, document/sentence/token ID, originalni oblik, beline, pomake, lemu, POS, NER i KB/QID, uz prazne `corrected_*` kolone za učesnike. `source_text` prvog reda čuva ceo original. Zaštitni apostrof sprečava Excel formule; `excel_escaped_fields` navodi svako zaštićeno polje, pa se original vraća uklanjanjem tačno jednog dodatog apostrofa samo u tim poljima. Detalji i postupak ispravke su u [uputstvu za radionicu](docs/WORKSHOP.md).
+
+**Karta je opcioni internet korak:** prvo označite saglasnost, pa kliknite na preuzimanje koordinata. Šalju se samo do 20 jedinstvenih LOC QID-ova na Wikidata, bez izvornog teksta. Upit ima vremenske/veličinske granice i ograničen memorijski keš. Crtaju se samo stvarno vraćene Zemljine koordinate P625, uz izvor i vreme preuzimanja. Predviđena veza sa QID-om i dalje može biti pogrešna. Ako nema entiteta, koordinata ili mreže, analiza i izvozi ostaju dostupni. Bez tog koraka aplikacija ne šalje QID upite.
 
 Server sluša isključivo `127.0.0.1`, sa `share=False`. Nema udaljene inferencije, Hugging Face prijave, neprimetnog slanja teksta ni beleženja sirovog teksta u aplikacione logove. Telemetrija Gradio/HF je isključena. Internet je potreban za pakete i prva preuzimanja sa javnog Hugging Face repozitorijuma. Anonimni zahtev sadrži naziv modela i mrežne metapodatke, ne vaš tekst. Učitavanje Transformers modela koristi `trust_remote_code=False` i safetensors. JuDig wheel se **ne instalira i ne importuje**: proverava se SHA-256 i izdvajaju samo model-podaci; paketni Python kod se ne izvršava.
 
@@ -53,12 +55,15 @@ Modeli su keširani van repozitorijuma: Windows `%LOCALAPPDATA%\tesla-nlp-worksh
 ```sh
 uv sync --locked
 uv run --locked pytest -q
+uv run --locked python scripts/smoke_workshop.py
+# Opcioni stvarni internet test: šalje samo predviđene LOC QID-ove na Wikidata
+uv run --locked python scripts/smoke_workshop.py --coordinates
 uv run --locked python scripts/smoke.py --small
 uv run --locked python scripts/smoke.py
 uv run --locked python -m workshop
 ```
 
-`scripts/smoke.py` zaista preuzima modele i radi CPU inferenciju; očekujte veliki prenos i potrošnju memorije. Zapisuje samo ugrađene izmišljene primere u `docs/runtime-results.json`. Aplikacija ne zapisuje korisničke analize u taj fajl. Testovi bez mreže koriste kontrolisane zamene samo za granice/greške; nisu zamena za ovaj test.
+`scripts/smoke_workshop.py` radi punu JuDig CPU analizu i provere izvoza; `--coordinates` izričito uključuje stvarni QID upit. `scripts/smoke.py` pokreće i dodatne modele. Očekujte veliki prenos pri prvom pokretanju i potrošnju memorije. Izveštaji čuvaju samo ugrađene izmišljene primere, nikada korisničke analize. Testovi bez mreže koriste kontrolisane zamene za granice i greške; nisu zamena za stvarnu inferenciju. [Provere i ograničenja](docs/TESTING.md) navode stvarno testirano okruženje.
 
 Za čist instalacioni test koristite novi folder i novu `.venv`; po potrebi i zaseban `UV_CACHE_DIR`. Modeli i sve tranzitivne zavisnosti su zaključani. Promena revizije je pregledana izmena koda, ne slobodno polje za proizvoljan model. Prvo ažurirajte audit, zatim stvarne testove. [Specifikacija](SPEC.md) opisuje granice projekta.
 

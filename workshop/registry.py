@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 
 @dataclass(frozen=True)
@@ -13,6 +13,7 @@ class Preset:
     download_gb: float
     filename: str = ""
     sha256: str = ""
+    full_linker: bool = False
 
 
 PRESETS = {
@@ -34,5 +35,6 @@ PRESETS = {
         "CC-BY-4.0", "summary", 512, 0.99,
     ),
 }
-TASK_PRESETS = {"ner": ["judig"], "pos": ["judig"], "emotion": ["emotion"], "summary": ["summary"]}
+PRESETS["judig_full"] = replace(PRESETS["judig"], id="judig_full", title="JuDig2026 · puna radionica sa NEL/KB · više RAM-a", full_linker=True)
+TASK_PRESETS = {"workshop": ["judig_full", "judig"], "ner": ["judig"], "pos": ["judig"], "emotion": ["emotion"], "summary": ["summary"]}
 EMOTION_LABELS = ("anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust")

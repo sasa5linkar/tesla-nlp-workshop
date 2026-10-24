@@ -5,6 +5,7 @@ from .models import MANAGER
 from .registry import EMOTION_LABELS, PRESETS, TASK_PRESETS
 
 EXPLANATIONS = {
+    "workshop": "JuDig predviđa granice rečenica, POS, leme i devet NER klasa. Izabrani puni režim uključuje NEL i objavljenu KB. QID veze su predviđanja za ručnu proveru, a NIL znači da veza nije data. Nema kalibrisanih procenata pouzdanosti. Koordinate se preuzimaju samo uz poseban pristanak; izvorni tekst se ne šalje.",
     "ner": "NER označava pretpostavljene raspone i klase. spaCy ovde ne daje kalibrisanu verovatnoću po entitetu; zato nema izmišljenog procenta. NEL nije uključen. PERS=osoba, ROLE=uloga/zanimanje, LOC=mesto, ORG=organizacija, DEMO=grupa/demonim, WORK=delo, EVENT=događaj, PRODUCT=proizvod, IDEO=ideologija.",
     "pos": "UPOS je vrsta reči, lema je pretpostavljeni osnovni oblik. Model ne predviđa bogate morfološke osobine; prazna polja nisu sigurna oznaka. Nema kalibrisane pouzdanosti po tokenu. Pogrešan razmak ili tokenizacija mogu uticati na rezultat.",
     "emotion": "Osam nezavisnih sigmoid skorova, uz izvorne pragove iz thresholds.json. Skorovi nisu kalibrisane verovatnoće niti zbir od 100%. Više emocija može preći prag; nijedna izabrana oznaka ne znači neutralno. Model je za društvene mreže i nepouzdan je kao detektor neutralnosti. Koristimo izvorni tekst, bez reprodukcije celog trening postupka čišćenja.",
@@ -68,12 +69,16 @@ def analyze(task, preset_id, text, progress=no_progress):
                     raise InputError("Jedan prozor teksta prelazi 512 podrečničkih tokena. Skratite dugačke reči ili odlomak; tekst nije odsečen.")
             doc = nlp(text)
             result["input_tokens"] = len(doc)
-            result["rows"] = [
-                {"token": token.text, "start": token.idx, "end": token.idx + len(token),
-                 "lemma": token.lemma_, "upos": token.pos_, "tag": token.tag_,
-                 "entity": token.ent_type_, "sentence_start": bool(token.is_sent_start)}
-                for token in doc
-            ]
+            if task == "workshop":
+                from .workshop_exports import collect_annotations
+                collect_annotations(doc, result, nel_enabled=nlp.has_pipe("entity_linker"))
+            else:
+                result["rows"] = [
+                    {"token": token.text, "start": token.idx, "end": token.idx + len(token),
+                     "lemma": token.lemma_, "upos": token.pos_, "tag": token.tag_,
+                     "entity": token.ent_type_, "sentence_start": bool(token.is_sent_start)}
+                    for token in doc
+                ]
             if task == "ner":
                 result["entities"] = [
                     {"text": ent.text, "start": ent.start_char, "end": ent.end_char,

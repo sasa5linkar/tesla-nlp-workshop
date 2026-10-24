@@ -98,7 +98,7 @@ def test_ui_builds_without_loading_models(monkeypatch):
     from workshop.ui import build_app
     monkeypatch.setattr(MANAGER, "load", lambda *args: pytest.fail("eager model load"))
     app = build_app()
-    assert sum(component.get("type") == "tabitem" for component in app.config["components"]) == 4
+    assert sum(component.get("type") == "tabitem" for component in app.config["components"]) == 1
     assert app.enable_queue
 
 
